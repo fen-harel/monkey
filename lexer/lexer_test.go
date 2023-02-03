@@ -6,6 +6,10 @@ import (
 	"example/monkey/token"
 )
 
+// Poses a dummyu scenario.
+// Tests whether parts of the code
+// run against a predefined scenario
+// for more accurate troubleshooting.
 func TestNextToken(t *testing.T) {
 	input := `let five = 5;
         let ten = 10;
