@@ -6,7 +6,7 @@ import (
 	"example/monkey/token"
 )
 
-// Poses a dummyu scenario.
+// Poses a dummy scenario.
 // Tests whether parts of the code
 // run against a predefined scenario
 // for more accurate troubleshooting.
