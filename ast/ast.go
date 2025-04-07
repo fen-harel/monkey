@@ -18,20 +18,18 @@ type Statement interface {
 
 type Expression interface {
 	Node
-	expresssionNode()
+	expressionNode()
 }
 
 // Expression statement is a wrapper around the expression
 // which fulfills the ast.Statement interface, allowing
 // us to add it to the Statements slice of ast.Program
 type ExpressionStatement struct {
-	Token      token.TokenType // the first token of the expression
+	Token      token.Token // the first token of the expression
 	Expression Expression
 }
 
 func (es *ExpressionStatement) statementNode() {}
-
-// func (es *ExpressionStatement) TokenLiteral() string { return es.TokenLiteral() }
 
 func (es *ExpressionStatement) TokenLiteral() string { return es.Token.Literal }
 
@@ -121,3 +119,12 @@ func (i *Identifier) TokenLiteral() string {
 func (i *Identifier) String() string {
 	return i.Value
 }
+
+type IntegerLiteral struct {
+	Token token.Token
+	Value int64
+}
+
+func (il *IntegerLiteral) expressionNode()      {}
+func (il *IntegerLiteral) TokenLiteral() string { return il.Token.Literal }
+func (il *IntegerLiteral) String() string       { return il.Token.Literal }
