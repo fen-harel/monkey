@@ -2,4 +2,4 @@
 
 ## Creating an interpreter for a made-up language (monkey) for educational purpose
 
-*Last stop -> Page 60
+*Read from -> Pg.62
