@@ -26,7 +26,7 @@ type Parser struct {
 }
 
 // Incremental values top-down to
-// denote order of preference
+// denote order of precedence
 const (
 	_int = iota
 	LOWEST
@@ -37,6 +37,39 @@ const (
 	PREFIX      // -X or !X
 	CALL        // myFunction(X)
 )
+
+// Definition of order of precedence
+// using above constants
+var precedences = map[token.TokenType]int{
+	token.EQ:       EQUALS,
+	token.NOT_EQ:   EQUALS,
+	token.LT:       LESSGREATER,
+	token.GT:       LESSGREATER,
+	token.PLUS:     SUM,
+	token.MINUS:    SUM,
+	token.SLASH:    PRODUCT,
+	token.ASTERISK: PRODUCT,
+}
+
+// Returns precedence associated with token type
+// of p.peekToken (next token to be evaluated)
+func (p *Parser) peekPrecedence() int {
+	if p, ok := precedences[p.peekToken.Type]; ok {
+		return p
+	}
+
+	return LOWEST
+}
+
+// Returns precedence associated with token type
+// of p.curToken (current token to be evaluated)
+func (p *Parser) curPrecedence() int {
+	if p, ok := precedences[p.curToken.Type]; ok {
+		return p
+	}
+
+	return LOWEST
+}
 
 func New(l *lexer.Lexer) *Parser {
 	p := &Parser{
@@ -157,7 +190,6 @@ func (p *Parser) parseReturnStatement() *ast.ReturnStatement {
 func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 	stmt := &ast.ExpressionStatement{Token: p.curToken}
 
-	// stmt.Expression := p.parseExpression(LOWEST)
 	stmt.Expression = p.parseExpression(LOWEST)
 
 	// Semicolons are optional
