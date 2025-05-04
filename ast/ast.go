@@ -140,7 +140,7 @@ func (oe *InfixExpression) expressionNode() {
 func (oe *InfixExpression) TokenLiteral() string {
 	return oe.Token.Literal
 }
-func (oe *InfixExpression) String() {
+func (oe *InfixExpression) String() string {
 	var out bytes.Buffer
 
 	out.WriteString("(")
