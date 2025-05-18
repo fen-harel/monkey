@@ -25,8 +25,7 @@ type Parser struct {
 	infixParseFns  map[token.TokenType]infixParseFn
 }
 
-// Incremental values top-down to
-// denote order of precedence
+// Set descending order of precedence
 const (
 	_int = iota
 	LOWEST
@@ -38,8 +37,7 @@ const (
 	CALL        // myFunction(X)
 )
 
-// Definition of order of precedence
-// using above constants
+// Mapping order of precedences to token type
 var precedences = map[token.TokenType]int{
 	token.EQ:       EQUALS,
 	token.NOT_EQ:   EQUALS,
@@ -259,6 +257,8 @@ func (p *Parser) noPrefixParseFnError(t token.TokenType) {
 	p.errors = append(p.errors, msg)
 }
 
+// Calls corresponding prefixParseFns & doubles into infixParseFns
+// if used such is coded in same statement
 func (p *Parser) parseExpression(precedence int) ast.Expression {
 	prefix := p.prefixParseFns[p.curToken.Type]
 	if prefix == nil {
@@ -266,6 +266,18 @@ func (p *Parser) parseExpression(precedence int) ast.Expression {
 		return nil
 	}
 	leftExp := prefix()
+
+	// Calls corresponding infixParseFns and executes according to set precendence
+	for !p.peekTokenIs(token.SEMICOLON) && precedence < p.peekPrecedence() {
+		infix := p.infixParseFns[p.peekToken.Type]
+		if infix == nil {
+			return leftExp
+		}
+
+		p.nextToken()
+
+		leftExp = infix(leftExp)
+	}
 
 	return leftExp
 }
