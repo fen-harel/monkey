@@ -428,11 +428,11 @@ func TestBooleanExpression(t *testing.T) {
 	if !ok {
 		t.Fatalf("exp not *ast.Boolean. got=%T", stmt.Expression)
 	}
-	if boolean.Value {
+	if boolean.Value != true {
 		t.Errorf("boolean.Value not %t. got=%t", true, boolean.Value)
 	}
-	if boolean.TokenLiteral() != "foobar" {
-		t.Errorf("boolean.TokenLiteral not %s. got=%s", "foobar",
+	if boolean.TokenLiteral() != "true" {
+		t.Errorf("boolean.TokenLiteral not %t. got=%s", true,
 			boolean.TokenLiteral())
 	}
 }
