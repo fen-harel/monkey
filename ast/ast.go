@@ -46,6 +46,8 @@ func (p *Program) TokenLiteral() string {
 	}
 }
 
+// Effectively recursively calls the String() method of
+// all statements belonging to that program
 func (p *Program) String() string {
 	var out bytes.Buffer
 
